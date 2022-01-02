@@ -29,14 +29,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-    - name: Output Run ID
-      run: echo ${{ github.run_id }}
     - name: Output Run Number
-      run: echo ${{ github.run_number }}
-#    - name: Nuget Add Source
-#      run: dotnet nuget add source --username ${{ github.actor }} --password ${GITHUB_TOKEN}  --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"      
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: echo "${{ github.event.inputs.version }}.${{ GITHUB.RUN_ID }}"
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
