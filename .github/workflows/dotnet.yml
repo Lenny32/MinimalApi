@@ -19,10 +19,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-    - name: Nuget Add Source
-      run: dotnet nuget add source --username ${{ github.actor }} --password ${GITHUB_TOKEN}  --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.actor }}/index.json"      
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#    - name: Nuget Add Source
+#      run: dotnet nuget add source --username ${{ github.actor }} --password ${GITHUB_TOKEN}  --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.actor }}/index.json"      
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -30,7 +30,7 @@ jobs:
     - name: Nuget Pack
       run: dotnet pack --configuration Release --no-build --include-symbols --verbosity normal
     - name: Nuget Push
-      run: dotnet nuget push "MinimalApiRegister/bin/Release/MinimalApiRegister.1.0.0.nupkg" --api-key ${GITHUB_TOKEN} --source "github"
+      run: dotnet nuget push "MinimalApiRegister/bin/Release/MinimalApiRegister.1.0.0.nupkg" --api-key ${GITHUB_TOKEN} --source "https://nuget.pkg.github.com/${{ github.actor }}/index.json"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
