@@ -17,6 +17,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+    - name: Nuget Add Source
+      run: dotnet nuget add source --username Lenny32 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Lenny32/index.json"
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
