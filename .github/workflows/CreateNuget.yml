@@ -30,16 +30,16 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Output Run Number
-      run: echo "${{ github.event.inputs.version }}.${{ GITHUB.RUN_ID }}"
+      run: echo "${{ github.event.inputs.version }}.${{ github.run_number }}"
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore --configuration Release -p:Version="${{ github.event.inputs.version }}.${{ GITHUB.RUN_ID }}"
+      run: dotnet build --no-restore --configuration Release -p:Version="${{ github.event.inputs.version }}.${{ github.run_number }}"
     - name: Nuget Pack
       run: dotnet pack --configuration Release --no-build --include-symbols --verbosity normal
     - name: Nuget Push
       run: |
         dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --name github --username ${{ github.repository_owner }} --password ${GITHUB_TOKEN} --store-password-in-clear-text
-        dotnet nuget push "MinimalApiRegister/bin/Release/MinimalApiRegister.${{ github.event.inputs.version }}.${{ GITHUB.RUN_ID }}.nupkg" --api-key ${GITHUB_TOKEN} --source github
+        dotnet nuget push "MinimalApiRegister/bin/Release/MinimalApiRegister.${{ github.event.inputs.version }}.${{ github.run_number }}.nupkg" --api-key ${GITHUB_TOKEN} --source github
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
