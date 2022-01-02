@@ -20,7 +20,10 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+      VERSION: "${{ github.event.inputs.version }}.${{ github.run_number }}"
+    
+    
     steps:
     - uses: actions/checkout@v2
     - name: github.actor
@@ -29,10 +32,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-
-    - name: Set version
-      run: echo "VERSION=\"${{ github.event.inputs.version }}.${{ github.run_number }}\""
-
     - name: Output Build Version Number
       run: echo "$VERSION"
     - name: Restore dependencies
