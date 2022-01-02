@@ -26,7 +26,7 @@ namespace Microsoft.AspNetCore.Builder
 
         public static IServiceCollection AddEndpoints(this IServiceCollection services, Assembly assembly)
         {
-            return AddEndpoints(services, assembly);
+            return AddEndpoints(services, new Assembly[] { assembly });
         }
 
         public static IServiceCollection AddEndpoints(this IServiceCollection services, params Assembly[] assemblies)
