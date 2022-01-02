@@ -42,7 +42,7 @@ namespace Microsoft.AspNetCore.Builder
         }
 
         private static List<Assembly> _assemblies { get; set; }
-        public static Assembly[] Assemblies => Assemblies.ToArray();
+        public static Assembly[] Assemblies => _assemblies.ToArray();
         public static void MapMinimalApi(this IEndpointRouteBuilder app)
         {
             if (!_assemblies.Any())
