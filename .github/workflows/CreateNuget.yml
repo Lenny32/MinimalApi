@@ -40,7 +40,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore --configuration Release -p:Version=${{ github.event.inputs.version }}.${{ GITHUB.RUN_ID }}
+      run: dotnet build --no-restore --configuration Release -p:Version="${{ github.event.inputs.version }}.${{ GITHUB.RUN_ID }}"
     - name: Nuget Pack
       run: dotnet pack --configuration Release --no-build --include-symbols --verbosity normal
     - name: Nuget Push
