@@ -1,0 +1,37 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: github.actor
+      run: echo ${{ github.repository_owner }}
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+#    - name: Nuget Add Source
+#      run: dotnet nuget add source --username ${{ github.actor }} --password ${GITHUB_TOKEN}  --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"      
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore  --configuration Release
+    - name: Nuget Pack
+      run: dotnet pack --configuration Release --no-build --include-symbols --verbosity normal
+    - name: Nuget Push
+      run: |
+        dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --name github --username ${{ github.repository_owner }} --password ${GITHUB_TOKEN} --store-password-in-clear-text
+        dotnet nuget push "MinimalApiRegister/bin/Release/MinimalApiRegister.1.0.0.nupkg" --api-key ${GITHUB_TOKEN} --source github
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
