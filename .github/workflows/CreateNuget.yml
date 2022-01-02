@@ -11,7 +11,7 @@ on:
       version:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Version of the package'
-        default: '1.0.0.0'
+        default: '1.0.0'
         required: true
         type: text
           
@@ -29,6 +29,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
+    - name: Output Run ID
+      run: echo ${{ github.run_id }}
+    - name: Output Run Number
+      run: echo ${{ github.run_number }}
 #    - name: Nuget Add Source
 #      run: dotnet nuget add source --username ${{ github.actor }} --password ${GITHUB_TOKEN}  --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"      
 #      env:
@@ -36,7 +40,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore --configuration Release -p:Version=${{ github.event.inputs.version }}
+      run: dotnet build --no-restore --configuration Release -p:Version=${{ github.event.inputs.version }}.${{ GITHUB_RUN_ID }}
     - name: Nuget Pack
       run: dotnet pack --configuration Release --no-build --include-symbols --verbosity normal
     - name: Nuget Push
