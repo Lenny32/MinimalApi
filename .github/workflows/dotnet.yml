@@ -13,15 +13,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: github.actor
+      run: echo ${{ github.actor }}
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
     - name: Nuget Add Source
-      run: dotnet nuget add source --username Lenny32 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Lenny32/index.json"
+      run: dotnet nuget add source --username Lenny32 --password ${GITHUB_TOKEN}  --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Lenny32/index.json"      
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore  --configuration Release
     - name: Nuget Pack
       run: dotnet pack --configuration Release --no-build --include-symbols --verbosity normal
+    - name: Nuget Push
+      run: dotnet nuget push "bin/Release/MinimalApiRegister.1.0.0.nupkg" --api-key ${GITHUB_TOKEN} --source "github"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
