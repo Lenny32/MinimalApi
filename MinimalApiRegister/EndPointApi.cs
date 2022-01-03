@@ -16,15 +16,15 @@
         {
             endpoints.MapGet(pattern, handler).WithTags(Name);
         }
-        public void MapPost(IEndpointRouteBuilder endpoints, string pattern, Delegate handler)
+        protected void MapPost(IEndpointRouteBuilder endpoints, string pattern, Delegate handler)
         {
             endpoints.MapPost(pattern, handler).WithTags(Name);
         }
-        public void MapPut(IEndpointRouteBuilder endpoints, string pattern, Delegate handler)
+        protected void MapPut(IEndpointRouteBuilder endpoints, string pattern, Delegate handler)
         {
             endpoints.MapPut(pattern, handler).WithTags(Name);
         }
-        public void MapDelete(IEndpointRouteBuilder endpoints, string pattern, Delegate handler)
+        protected void MapDelete(IEndpointRouteBuilder endpoints, string pattern, Delegate handler)
         {
             endpoints.MapDelete(pattern, handler).WithTags(Name);
         }

@@ -49,14 +49,12 @@ namespace Microsoft.AspNetCore.Builder
                 throw new InvalidOperationException("Unable to find the required services. Please add all the required services by calling 'IServiceCollection.AddEndpoints' with or without extra parameters inside the call to 'ConfigureServices(...)' in the application startup code.");
 
             var types = _assemblies.Where(x => x != null).SelectMany(x => x.GetTypes())
-                .Where(x => typeof(IEndPointApi).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
+                .Where(x => typeof(IEndPointApi).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract && x.GetConstructors().Any(y=> !y.GetParameters().Any()))
                 .ToList();
 
             foreach (var type in types)
             {
-                (app.ServiceProvider.GetService(type) as IEndPointApi)?.Register(app);
-
-                //(Activator.CreateInstance(type) as IEndPointApi)?.Register(app);
+                (Activator.CreateInstance(type) as IEndPointApi)?.Register(app);
             }
         }
     }
